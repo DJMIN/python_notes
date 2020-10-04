@@ -73,7 +73,7 @@ with timer('test context manager'):
 
 
 # timer can further be defined as a class to fit more situations
-class Timer(object):
+class Timer:
     """a timer class"""
 
     def __init__(self, name='timer', log_func=None):

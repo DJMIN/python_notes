@@ -2,12 +2,12 @@
 """responsible chain design pattern"""
 
 
-class Request(object):
+class Request:
     """define your own request object"""
     pass
 
 
-class Processor(object):
+class Processor:
     """
     processor base class
     each processor can be connected to a successor (if necessary)
@@ -44,7 +44,7 @@ class Processor(object):
             return self.successor.handle_request(request)
 
 
-class ProcessorChain(object):
+class ProcessorChain:
     """
     processor chain provide a list
         to manage relationship between processors

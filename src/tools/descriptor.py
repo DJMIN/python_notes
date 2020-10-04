@@ -2,7 +2,7 @@
 """descriptor"""
 
 
-class Descriptor(object):
+class Descriptor:
     """descriptor can easily create similar properties"""
 
     def __set_name__(self, owner, name):
@@ -18,7 +18,7 @@ class Descriptor(object):
         instance.__dict__.pop(self.name)
 
 
-class TargetObject(object):
+class TargetObject:
     key = Descriptor()
     value = Descriptor()
 
@@ -42,13 +42,39 @@ class TypeValidateDescriptor(Descriptor):
         super().__set__(instance, value)
 
 
-class AnotherTargetObject(object):
+class AnotherTargetObject:
     key = TypeValidateDescriptor(str)
     value = TypeValidateDescriptor(int)
 
     def __init__(self, key, value):
         self.key = key
         self.value = value
+
+
+class AdvancedDescriptor(Descriptor):
+    """
+    more functions can be added to descriptor
+    for value validation:
+        can go further to allow user send validation functions
+        not only validate type of values
+    can also add a new argument to control 'reset' activities
+    """
+
+    def __init__(self, validate=None, resettable=True):
+        self.validate = validate
+        self.resettable = resettable
+
+    def __set__(self, instance, value):
+        if self.name in instance.__dict__ and not self.resettable:
+            raise KeyError(f'{self.name} value cannot be reset')
+        if self.validate is not None:
+            if isinstance(self.validate, type):
+                assert isinstance(value, self.validate), \
+                    f'{self.name} requires {self.validate}, not {type(value)}'
+            elif callable(self.validate):
+                assert self.validate(value), \
+                    f'{self.name} does not pass func {self.validate.__name__}'
+        super().__set__(instance, value)
 
 
 if __name__ == '__main__':

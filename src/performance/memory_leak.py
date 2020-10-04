@@ -56,7 +56,7 @@ print('gc.collect() now release the memory to solve memory leak problem.')
 # class attributes can also cause memory leak
 
 
-class Node(object):
+class Node:
     def __init__(self):
         self.child = None
 

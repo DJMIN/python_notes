@@ -2,7 +2,7 @@
 """factory design pattern"""
 
 
-class Product(object):
+class Product:
     """a product may have many features"""
 
     def __init__(self):
@@ -18,7 +18,7 @@ class Product(object):
         return cls()
 
 
-class Factory(object):
+class Factory:
     """use factory to create product"""
 
     def __init__(self):
@@ -37,7 +37,7 @@ class Factory(object):
 # here follows a detail example
 
 
-class MyProduct(object):
+class MyProduct:
 
     def __init__(self, prod_name, prod_type, prod_owner):
         self.name = prod_name
@@ -55,7 +55,7 @@ class MyProduct(object):
         )
 
 
-class MyFactory(object):
+class MyFactory:
 
     def __init__(self, fac_type, fac_owner):
         """factory type and owner for product creation"""
