@@ -5,6 +5,7 @@ import math
 
 
 class Vector2D:
+    """2D vector with x and y"""
     __slots__ = ['x', 'y']
 
     def __init__(self, x=0, y=0):
@@ -47,6 +48,7 @@ print(bool(vn))
 
 
 class Vector2DAdv(Vector2D):
+    """2D vector which supports more operations"""
 
     def __mul__(self, other):
         if isinstance(other, Vector2D):
