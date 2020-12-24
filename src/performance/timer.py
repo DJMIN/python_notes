@@ -25,7 +25,7 @@ def timeit(func):
 
 
 # or a more complicated decorator using loggers
-def timeit_with_logger(log_func=print):
+def timeit_with_logger(msg=None, log_func=print):
     """
     log function is defined here to allow user to use loggers
     e.x. log_func=print / log_func=logger.DEBUG
@@ -37,7 +37,7 @@ def timeit_with_logger(log_func=print):
             res = func(*args, **kwargs)
             time_elapsed = round(time.time() - begin_time, 4)
             from src.tools.signature import calling_description
-            info = calling_description(func, *args, **kwargs)
+            info = msg or calling_description(func, *args, **kwargs)
             log_func(f'{info} | {time_elapsed} sec')
             return res
         return wrapper
