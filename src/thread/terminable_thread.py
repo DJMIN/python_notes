@@ -5,19 +5,18 @@ import ctypes
 import threading
 
 
-class StoppableThread(threading.Thread):
+class TerminableThread(threading.Thread):
     """a thread that can be stopped by forcing an exception in the execution context"""
 
-    def stop(self, exception_cls, raise_sec=2.0):
+    def terminate(self, exception_cls, repeat_sec=2.0):
         if self.is_alive() is False:
             return True
-        killer = ThreadKiller(self, exception_cls, repeat_sec=raise_sec)
+        killer = ThreadKiller(self, exception_cls, repeat_sec=repeat_sec)
         killer.start()
-        killer.join()
 
 
 class ThreadKiller(threading.Thread):
-    """separate thread to kill StoppableThread"""
+    """separate thread to kill TerminableThread"""
 
     def __init__(self, target_thread, exception_cls, repeat_sec=2.0):
         threading.Thread.__init__(self)

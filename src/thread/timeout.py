@@ -73,16 +73,16 @@ def timeout(sec, raise_sec=1):
                     else:
                         result.append(res)
 
-                # typically, a python thread cannot be terminated, use StoppableThread instead
-                from src.thread.stoppable_thread import StoppableThread
-                thread = StoppableThread(target=run_func, daemon=True)
+                # typically, a python thread cannot be terminated, use TerminableThread instead
+                from src.thread.terminable_thread import TerminableThread
+                thread = TerminableThread(target=run_func, daemon=True)
                 thread.start()
                 thread.join(timeout=sec)
 
                 if thread.is_alive():
                     # a timeout thread keeps alive after join method, terminate and raise TimeoutError
                     exc = type('TimeoutError', FuncTimeoutError.__bases__, dict(FuncTimeoutError.__dict__))
-                    thread.stop(exception_cls=exc, raise_sec=raise_sec)
+                    thread.terminate(exception_cls=FuncTimeoutError, repeat_sec=raise_sec)
                     raise TimeoutError(err_msg)
                 elif exception:
                     # if exception occurs during the thread running, raise it
@@ -93,3 +93,13 @@ def timeout(sec, raise_sec=1):
 
         return wrapped_func
     return decorator
+
+
+if __name__ == '__main__':
+    import time
+
+    @timeout(3)
+    def slow_func():
+        time.sleep(100)
+
+    slow_func()
